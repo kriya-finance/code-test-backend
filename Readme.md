@@ -1,5 +1,5 @@
 # MarketInvoice C# Backend Coding Exercise
-In Sloth Enterprise, we offer our customers 3 different products.
+At Sloth Enterprise, we offer our customers 3 different products.
 * Select Invoice Discount
 * Confidential Invoice Discount
 * Business Loans
@@ -20,8 +20,7 @@ This code was written by a baby sloth some time ago and needs a bit of TLC.
 
 ### What we pay attention to when we evaluate your submission
 * Code quality and consistency
-* Naming conventions
-* Styling
+* Readability and simplicity
 * Test quality
 * Commit history
 
@@ -30,7 +29,7 @@ This code was written by a baby sloth some time ago and needs a bit of TLC.
 Here are guidelines on how to submit the exercise
 
 ### If you are in contact with our Talent Team
-* ZIP your code directory, without uncommitted / ignored files _(including node_modules)_
+* ZIP your code directory, without uncommitted / ignored files _(i.e. NuGet packages)_
 * Email the submission in a zip file to our Talent team contact
 
 ### Getting in contact with our talent team

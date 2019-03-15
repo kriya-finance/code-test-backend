@@ -15,8 +15,10 @@ This code was written by a baby sloth some time ago and needs a bit of TLC.
 
 ## The scope of the exercise is as follows:
 
-1. Describe in `Comments.md` the code issues with `ProductApplicationService`. List 5 main areas of concern.
+1. Describe in `Comments.md` the code issues with `ProductApplicationService`. List top 5 main areas of concern.
 2. Refactor `ProductApplicationService`. (do not touch SlothEnterprise.External)
+
+We advice you to take between 60 to 90 minutes to complete this task.
 
 ### What we pay attention to when we evaluate your submission
 * Code quality and consistency

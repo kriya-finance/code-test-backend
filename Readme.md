@@ -31,7 +31,8 @@ We advice you to take between 60 to 90 minutes to complete this task.
 Here are guidelines on how to submit the exercise
 
 ### If you are in contact with our Talent Team
-* ZIP your code directory, without uncommitted / ignored files _(i.e. NuGet packages)_
+* ZIP your code directory, *without* uncommitted / ignored files _(i.e. NuGet packages)_
+  - include git, but exclude anything not checked in _(git clean -fdx)_.
 * Email the submission in a zip file to our Talent team contact
 
 ### Getting in contact with our talent team

@@ -23,6 +23,7 @@ We advice you to take between 60 to 90 minutes to complete this task.
 ### What we pay attention to when we evaluate your submission
 * Code quality and consistency
 * Readability and simplicity
+* Backwards compatibility
 * Test quality
 * Commit history
 

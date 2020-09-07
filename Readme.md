@@ -1,4 +1,4 @@
-# MarketInvoice C# Backend Coding Exercise
+# MarketFinance C# Backend Coding Exercise
 At Sloth Enterprise, we offer our customers 3 different products.
 * Select Invoice Discount
 * Confidential Invoice Discount
@@ -39,7 +39,7 @@ Here are guidelines on how to submit the exercise
 * Email the submission in a zip file to our Talent team contact
 
 ### Getting in contact with our talent team
-Get in touch with us via email at [recruitment@marketinvoice.com](recruitment@marketinvoice.com)!
+Get in touch with us via email at [recruitment@marketfinance.com](recruitment@marketfinance.com)!
 
 #### Thank you for taking your time
-[MarketInvoice Tech Team](https://github.com/marketinvoice)
+[MarketFinance Tech Team](https://github.com/marketfinance)

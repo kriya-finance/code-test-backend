@@ -6,30 +6,32 @@ using SlothEnterprise.ProductApplication.Products;
 
 namespace SlothEnterprise.ProductApplication
 {
-    public class ProductApplicationService
+    public class ProductApplicationService : IProductApplicationService
     {
         private readonly ISelectInvoiceService _selectInvoiceService;
-        private readonly IConfidentialInvoiceService _confidentialInvoiceWebService;
+        private readonly IConfidentialInvoiceService _confidentialInvoiceService;
         private readonly IBusinessLoansService _businessLoansService;
 
-        public ProductApplicationService(ISelectInvoiceService selectInvoiceService, IConfidentialInvoiceService confidentialInvoiceWebService, IBusinessLoansService businessLoansService)
+        public ProductApplicationService(ISelectInvoiceService selectInvoiceService, IConfidentialInvoiceService confidentialInvoiceService, IBusinessLoansService businessLoansService)
         {
             _selectInvoiceService = selectInvoiceService;
-            _confidentialInvoiceWebService = confidentialInvoiceWebService;
+            _confidentialInvoiceService = confidentialInvoiceService;
             _businessLoansService = businessLoansService;
         }
 
-        public int SubmitApplicationFor(ISellerApplication application)
+        public IApplicationResult SubmitApplicationFor(ISellerApplication application)
         {
 
             if (application.Product is SelectiveInvoiceDiscount sid)
             {
-                return _selectInvoiceService.SubmitApplicationFor(application.CompanyData.Number.ToString(), sid.InvoiceAmount, sid.AdvancePercentage);
+
+                var resultApplicationId = _selectInvoiceService.SubmitApplicationFor(application.CompanyData.WrittenNumber, sid.InvoiceAmount, sid.AdvancePercentage);
+                return new ApplicationResult(resultApplicationId);
             }
 
             if (application.Product is ConfidentialInvoiceDiscount cid)
             {
-                var result = _confidentialInvoiceWebService.SubmitApplicationFor(
+                var result = _confidentialInvoiceService.SubmitApplicationFor(
                     new CompanyDataRequest
                     {
                         CompanyFounded = application.CompanyData.Founded,
@@ -38,7 +40,7 @@ namespace SlothEnterprise.ProductApplication
                         DirectorName = application.CompanyData.DirectorName
                     }, cid.TotalLedgerNetworth, cid.AdvancePercentage, cid.VatRate);
 
-                return (result.Success) ? result.ApplicationId ?? -1 : -1;
+                return result;
             }
 
             if (application.Product is BusinessLoans loans)
@@ -54,10 +56,10 @@ namespace SlothEnterprise.ProductApplication
                     InterestRatePerAnnum = loans.InterestRatePerAnnum,
                     LoanAmount = loans.LoanAmount
                 });
-                return (result.Success) ? result.ApplicationId ?? -1 : -1;
+                return result;
             }
 
             throw new InvalidOperationException();
-        }
+        }       
     }
 }

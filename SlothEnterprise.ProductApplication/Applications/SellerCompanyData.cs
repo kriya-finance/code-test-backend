@@ -8,6 +8,7 @@ namespace SlothEnterprise.ProductApplication.Applications
         int Number { get; set; }
         string DirectorName { get; set; }
         DateTime Founded { get; set; }
+        string WrittenNumber => Number.ToString();
     }
 
 

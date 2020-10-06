@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlothEnterprise.External;
+using System;
 
 namespace SlothEnterprise.ProductApplication.Applications
 {
@@ -9,6 +10,7 @@ namespace SlothEnterprise.ProductApplication.Applications
         string DirectorName { get; set; }
         DateTime Founded { get; set; }
         string WrittenNumber => Number.ToString();
+        CompanyDataRequest ToRequest();
     }
 
 
@@ -18,5 +20,16 @@ namespace SlothEnterprise.ProductApplication.Applications
         public int Number { get; set; }
         public string DirectorName { get; set; }
         public DateTime Founded { get; set; }
+
+        public CompanyDataRequest ToRequest()
+        {
+            return new CompanyDataRequest
+            {
+                CompanyFounded = Founded,
+                CompanyNumber = Number,
+                CompanyName = Name,
+                DirectorName = DirectorName
+            };
+        }
     }
 }

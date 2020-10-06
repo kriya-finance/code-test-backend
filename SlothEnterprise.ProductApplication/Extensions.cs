@@ -1,7 +1,7 @@
 using Autofac;
 using NSubstitute;
 
-namespace SlothEnterprise.ProductApplication.Tests
+namespace SlothEnterprise.ProductApplication
 {
     public static class Extensions
     {

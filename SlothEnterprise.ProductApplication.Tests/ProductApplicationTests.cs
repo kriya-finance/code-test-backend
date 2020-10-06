@@ -16,34 +16,16 @@ namespace SlothEnterprise.ProductApplication.Tests
     public class ProductApplicationTests
     {
 
-        private ILifetimeScope scope;
-
         [OneTimeSetUp]
         public void SetupTests()
         {
-            var builder = new ContainerBuilder();
-            builder.Register((c, p) =>
-                {
-                    var paramIdx = 0;
-                    return new ProductApplicationService(
-                        p.Positional<ISelectInvoiceService>(paramIdx++),
-                        p.Positional<IConfidentialInvoiceService>(paramIdx++),
-                        p.Positional<IBusinessLoansService>(paramIdx++));
-                }
-            )
-            .As<IProductApplicationService>();
-            
-            builder.RegisterSubstitute<ISelectInvoiceService>();
-            builder.RegisterSubstitute<IConfidentialInvoiceService>();
-            builder.RegisterSubstitute<IBusinessLoansService>();
-
-            scope = builder.Build().BeginLifetimeScope();
+            StartUp.Start();
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
-            scope.Dispose();
+            StartUp.Finish();
         }
 
         private static IReadOnlyDictionary<Type, Type> ProductServiceTypesMap { get; }
@@ -71,9 +53,9 @@ namespace SlothEnterprise.ProductApplication.Tests
         {
             // arrange
             var givenApplicationResultId = 1;
-            var selectInvoiceService       = scope.Resolve<ISelectInvoiceService>();
-            var confidentialInvoiceService = scope.Resolve<IConfidentialInvoiceService>();
-            var businessLoansService       = scope.Resolve<IBusinessLoansService>();
+            var selectInvoiceService       = StartUp.Scope.Resolve<ISelectInvoiceService>();
+            var confidentialInvoiceService = StartUp.Scope.Resolve<IConfidentialInvoiceService>();
+            var businessLoansService       = StartUp.Scope.Resolve<IBusinessLoansService>();
 
             var routeException = new Exception("Product routed to wrong service");
             var givenApplicationResult = new ApplicationResult(givenApplicationResultId);

@@ -8,7 +8,7 @@ using SlothEnterprise.ProductApplication.Products;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
+using SlothEnterprise.ProductApplication.Workflow;
 
 namespace SlothEnterprise.ProductApplication.Tests
 {
@@ -74,8 +74,9 @@ namespace SlothEnterprise.ProductApplication.Tests
                 { typeof(BusinessLoans), () => businessLoansService.ReceivedWithAnyArgs().SubmitApplicationFor(null , null) },
             };
 
-            var serviceParameters = ProductServiceTypesMap.Values.Select((st, i) => new PositionalParameter(i, scope.Resolve(st)));
-            var productService = scope.Resolve<IProductApplicationService>(serviceParameters);
+            var parameter = new PositionalParameter(0, null);
+            parameter = new PositionalParameter(0, StartUp.Scope.Resolve<IProductResolver>(parameter));
+            var productService = StartUp.Scope.Resolve<IProductApplicationService>(parameter);
 
             //act
             var applicationResult = productService.SubmitApplicationFor(application);

@@ -5,10 +5,10 @@ namespace SlothEnterprise.ProductApplication.Applications
 {
     public interface ISellerCompanyData
     {
-        string Name { get; set; }
-        int Number { get; set; }
-        string DirectorName { get; set; }
-        DateTime Founded { get; set; }
+        string Name { get; }
+        int Number { get; }
+        string DirectorName { get; }
+        DateTime Founded { get; }
         string WrittenNumber => Number.ToString();
         CompanyDataRequest ToRequest();
     }
@@ -16,10 +16,10 @@ namespace SlothEnterprise.ProductApplication.Applications
 
     public class SellerCompanyData : ISellerCompanyData
     {
-        public string Name { get; set; }
-        public int Number { get; set; }
-        public string DirectorName { get; set; }
-        public DateTime Founded { get; set; }
+        public string Name { get; }
+        public int Number { get; }
+        public string DirectorName { get; }
+        public DateTime Founded { get; }
 
         public CompanyDataRequest ToRequest()
         {

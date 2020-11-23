@@ -4,7 +4,7 @@ At Sloth Enterprise, we offer our customers 3 different products.
 * Confidential Invoice Discount
 * Business Loans
 
-Each product has different application criteria and is hosted in its very own microservice. Sloth Enterprise provides a single service : `ProductApplicationService` as a nexus for these 3 microservices. The said service is hosted in this project.
+Each product has different application criteria and is hosted in its very own microservice. Sloth Enterprise provides a single service : `ProductApplicationService` as a nexus for these 3 microservices. The said service is hosted in this project. We are looking at adding more products and realised that the code isn't well written or extensible.
 
 ---
 
@@ -26,9 +26,9 @@ Note that we have added xUnit as the default testing framework but you are welco
 * Code quality and consistency
 * Readability and simplicity
 * Backwards compatibility
+* Extensibility
 * Test quality
 * Commit history
-
 
 ## Submission Guidelines
 Here are guidelines on how to submit the exercise

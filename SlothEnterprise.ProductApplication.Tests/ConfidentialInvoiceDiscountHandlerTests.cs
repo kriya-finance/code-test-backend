@@ -46,16 +46,27 @@ namespace SlothEnterprise.ProductApplication.Tests
         }
 
         [Fact]
-        public void SelectiveInvoiceDiscountHandler_ShouldNotHandlerOtherProductType()
+        public void ConfidentialInvoiceDiscountHandler_ShouldNotHandlerOtherProductType()
         {
             var result = _sut.CanHandle(new BusinessLoans() { });
             result.Should().Be(false);
         }
 
-
+        [Fact]
+        public void ConfidentialInvoiceDiscountHandler_ShouldNotHandleNull()
+        {
+            var result = _sut.CanHandle(null);
+            result.Should().Be(false);
+        }
 
         [Fact]
-        public void SelectiveInvoiceDiscountHandler_NullConstructorParameters_ShouldThrow()
+        public void ConfidentialInvoiceDiscountHandler_ShouldThrowIfApplicationIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => _sut.Handle(null));
+        }
+
+        [Fact]
+        public void ConfidentialInvoiceDiscountHandler_NullConstructorParameters_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>(() => new SelectiveInvoiceDiscountHandler(null));
         }

@@ -17,9 +17,6 @@ namespace SlothEnterprise.ProductApplication.Handlers
 
         public bool CanHandle(IProduct product)
         {
-            if (product == null)
-                throw new ArgumentNullException(nameof(product));
-
             return product is ConfidentialInvoiceDiscount;
         }
 

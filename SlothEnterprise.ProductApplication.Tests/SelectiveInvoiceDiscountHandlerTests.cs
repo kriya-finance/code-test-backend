@@ -49,6 +49,19 @@ namespace SlothEnterprise.ProductApplication.Tests
         }
 
         [Fact]
+        public void SelectiveInvoiceDiscountHandler_ShouldNotHandleNull()
+        {
+            var result = _sut.CanHandle(null);
+            result.Should().Be(false);
+        }
+
+        [Fact]
+        public void SelectiveInvoiceDiscountHandler_ShouldThrowIfApplicationIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => _sut.Handle(null));
+        }
+
+        [Fact]
         public void SelectiveInvoiceDiscountHandler_NullConstructorParameters_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>(() => new SelectiveInvoiceDiscountHandler(null));

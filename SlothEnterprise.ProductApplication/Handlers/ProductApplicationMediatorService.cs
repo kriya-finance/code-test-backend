@@ -1,8 +1,6 @@
 ﻿using SlothEnterprise.ProductApplication.Applications;
 using SlothEnterprise.ProductApplication.Exceptions;
-using SlothEnterprise.ProductApplication.Products;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 

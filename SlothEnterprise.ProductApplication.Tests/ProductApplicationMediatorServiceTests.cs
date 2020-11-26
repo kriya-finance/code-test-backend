@@ -123,6 +123,12 @@ namespace SlothEnterprise.ProductApplication.Tests
             Assert.Throws<InvalidApplicationException>(() => _sut.SubmitApplicationFor(_sellerApplication.Object));
         }
 
+        [Fact]
+        public void ProductApplicationMediatorService_NullConstructorParameters_ShouldThrow()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ProductApplicationMediatorService(null));
+        }
+
         private class ProductWithoutHandler : IProduct
         {
             public int Id { get; set; }

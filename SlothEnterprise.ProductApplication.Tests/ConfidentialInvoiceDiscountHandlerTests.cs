@@ -5,6 +5,7 @@ using SlothEnterprise.External.V1;
 using SlothEnterprise.ProductApplication.Applications;
 using SlothEnterprise.ProductApplication.Handlers;
 using SlothEnterprise.ProductApplication.Products;
+using System;
 using Xunit;
 
 namespace SlothEnterprise.ProductApplication.Tests
@@ -49,6 +50,14 @@ namespace SlothEnterprise.ProductApplication.Tests
         {
             var result = _sut.CanHandle(new BusinessLoans() { });
             result.Should().Be(false);
+        }
+
+
+
+        [Fact]
+        public void SelectiveInvoiceDiscountHandler_NullConstructorParameters_ShouldThrow()
+        {
+            Assert.Throws<ArgumentNullException>(() => new SelectiveInvoiceDiscountHandler(null));
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using Moq;
-using SlothEnterprise.External;
 using SlothEnterprise.External.V1;
 using SlothEnterprise.ProductApplication.Applications;
+using SlothEnterprise.ProductApplication.Handlers;
 using SlothEnterprise.ProductApplication.Products;
+using System;
 using Xunit;
 
 namespace SlothEnterprise.ProductApplication.Tests
@@ -11,17 +12,16 @@ namespace SlothEnterprise.ProductApplication.Tests
     public class ProductApplicationTests
     {
         private readonly ProductApplicationService _sut;
-        private readonly Mock<ISelectInvoiceService> _selectInvoiceServiceMock = new Mock<ISelectInvoiceService>();
+        private readonly Mock<IProductApplicationMediatorService> _mediatorService = new Mock<IProductApplicationMediatorService>();
         private readonly Mock<IConfidentialInvoiceService> _confidentialInvoiceServiceMock = new Mock<IConfidentialInvoiceService>();
         private readonly Mock<IBusinessLoansService> _businessLoansServiceMock = new Mock<IBusinessLoansService>();
         private readonly ISellerApplication _sellerApplication;
-        private readonly Mock<IApplicationResult> _result = new Mock<IApplicationResult>();
+        private readonly int _result = 10;
 
         public ProductApplicationTests()
         {
-            _sut = new ProductApplicationService(_selectInvoiceServiceMock.Object, _confidentialInvoiceServiceMock.Object, _businessLoansServiceMock.Object);
-            _result.SetupProperty(p => p.ApplicationId, 1);
-            _result.SetupProperty(p => p.Success, true);
+            _sut = new ProductApplicationService(_mediatorService.Object);
+
             var sellerApplicationMock = new Mock<ISellerApplication>();
             sellerApplicationMock.SetupProperty(p => p.Product, new ConfidentialInvoiceDiscount());
             sellerApplicationMock.SetupProperty(p => p.CompanyData, new SellerCompanyData());
@@ -29,11 +29,17 @@ namespace SlothEnterprise.ProductApplication.Tests
         }
 
         [Fact]
-        public void ProductApplicationService_SubmitApplicationFor_WhenCalledWithSelectiveInvoiceDiscount_ShouldReturnOne()
+        public void ProductApplicationService_SubmitApplicationFor_WhenCalled_ShouldCallMediatorSubmitApplicationForOnce()
         {
-            _confidentialInvoiceServiceMock.Setup(m => m.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(_result.Object);
+            _mediatorService.Setup(m => m.SubmitApplicationFor(It.IsAny<ISellerApplication>())).Returns(_result);
             var result = _sut.SubmitApplicationFor(_sellerApplication);
-            result.Should().Be(1);
+            result.Should().Be(_result);
+        }
+
+        [Fact]
+        public void ProductApplicationService_NullConstructorParameters_ShouldThrow()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ProductApplicationService(null));
         }
     }
 }

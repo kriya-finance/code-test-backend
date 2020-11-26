@@ -129,6 +129,30 @@ namespace SlothEnterprise.ProductApplication.Tests
             Assert.Throws<ArgumentNullException>(() => new ProductApplicationMediatorService(null));
         }
 
+        [Fact]
+        public void ProductApplicationMediatorService_ShouldHandlerNewTypeOfService()
+        {
+            //arrange
+            var businessLoansHandler = new Mock<IProductApplicationHandler>();
+            var personalLoadHandler = new Mock<IProductApplicationHandler>();
+
+            businessLoansHandler.Setup(m => m.CanHandle(It.IsAny<BusinessLoans>())).Returns(true);
+            personalLoadHandler.Setup(m => m.CanHandle(It.IsAny<PersonalLoans>())).Returns(true);
+
+            var sellerApplication = new Mock<ISellerApplication>();
+            sellerApplication.SetupProperty(p => p.CompanyData, new SellerCompanyData());
+            sellerApplication.SetupProperty(p => p.Product, new PersonalLoans());
+
+            var sut = new ProductApplicationMediatorService(new List<IProductApplicationHandler> { businessLoansHandler.Object, personalLoadHandler.Object });
+
+            //act
+            sut.SubmitApplicationFor(sellerApplication.Object);
+
+            //assert
+            personalLoadHandler.Verify(x => x.Handle(sellerApplication.Object), Times.Once());
+            businessLoansHandler.Verify(x => x.Handle(sellerApplication.Object), Times.Never());
+        }
+
         private class ProductWithoutHandler : IProduct
         {
             public int Id { get; set; }

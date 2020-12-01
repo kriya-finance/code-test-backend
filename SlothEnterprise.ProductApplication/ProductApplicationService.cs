@@ -6,7 +6,7 @@ using SlothEnterprise.ProductApplication.Products;
 
 namespace SlothEnterprise.ProductApplication
 {
-    public class ProductApplicationService
+    public class ProductApplicationService : IProductApplicationService
     {
         private readonly ISelectInvoiceService _selectInvoiceService;
         private readonly IConfidentialInvoiceService _confidentialInvoiceWebService;

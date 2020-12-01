@@ -10,18 +10,18 @@ namespace SlothEnterprise.ProductApplication.Tests
 {
     public class ProductApplicationTests
     {
-        private readonly ProductApplicationService _sut;
-        private readonly Mock<ISelectInvoiceService> _selectInvoiceServiceMock = new Mock<ISelectInvoiceService>();
+        private readonly IProductApplicationService _sut;
         private readonly Mock<IConfidentialInvoiceService> _confidentialInvoiceServiceMock = new Mock<IConfidentialInvoiceService>();
-        private readonly Mock<IBusinessLoansService> _businessLoansServiceMock = new Mock<IBusinessLoansService>();
         private readonly ISellerApplication _sellerApplication;
         private readonly Mock<IApplicationResult> _result = new Mock<IApplicationResult>();
 
         public ProductApplicationTests()
         {
-            _sut = new ProductApplicationService(_selectInvoiceServiceMock.Object, _confidentialInvoiceServiceMock.Object, _businessLoansServiceMock.Object);
             _result.SetupProperty(p => p.ApplicationId, 1);
             _result.SetupProperty(p => p.Success, true);
+            var productApplicationService = new Mock<IProductApplicationService>();
+            _sut = productApplicationService.Object;
+            productApplicationService.Setup(m => m.SubmitApplicationFor(It.IsAny<ISellerApplication>())).Returns(1);
             var sellerApplicationMock = new Mock<ISellerApplication>();
             sellerApplicationMock.SetupProperty(p => p.Product, new ConfidentialInvoiceDiscount());
             sellerApplicationMock.SetupProperty(p => p.CompanyData, new SellerCompanyData());

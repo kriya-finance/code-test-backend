@@ -1,4 +1,7 @@
-﻿namespace SlothEnterprise.ProductApplication.Products
+﻿using SlothEnterprise.ProductApplication.Abstractions;
+using SlothEnterprise.ProductApplication.Constants;
+
+namespace SlothEnterprise.ProductApplication.Models.Products
 {
     public class ConfidentialInvoiceDiscount : IProduct
     {

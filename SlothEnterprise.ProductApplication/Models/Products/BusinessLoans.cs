@@ -1,4 +1,6 @@
-﻿namespace SlothEnterprise.ProductApplication.Products
+﻿using SlothEnterprise.ProductApplication.Abstractions;
+
+namespace SlothEnterprise.ProductApplication.Models.Products
 {
     public class BusinessLoans : IProduct
     {

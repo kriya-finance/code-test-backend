@@ -1,10 +1,11 @@
 ﻿using System;
 using SlothEnterprise.External;
 using SlothEnterprise.External.V1;
-using SlothEnterprise.ProductApplication.Applications;
-using SlothEnterprise.ProductApplication.Products;
+using SlothEnterprise.ProductApplication.Abstractions;
+using SlothEnterprise.ProductApplication.Abstractions.Services;
+using SlothEnterprise.ProductApplication.Models.Products;
 
-namespace SlothEnterprise.ProductApplication
+namespace SlothEnterprise.ProductApplication.Services
 {
     public class ProductApplicationService : IProductApplicationService
     {
@@ -38,7 +39,7 @@ namespace SlothEnterprise.ProductApplication
                         DirectorName = application.CompanyData.DirectorName
                     }, cid.TotalLedgerNetworth, cid.AdvancePercentage, cid.VatRate);
 
-                return (result.Success) ? result.ApplicationId ?? -1 : -1;
+                return result.Success ? result.ApplicationId ?? -1 : -1;
             }
 
             if (application.Product is BusinessLoans loans)
@@ -54,7 +55,7 @@ namespace SlothEnterprise.ProductApplication
                     InterestRatePerAnnum = loans.InterestRatePerAnnum,
                     LoanAmount = loans.LoanAmount
                 });
-                return (result.Success) ? result.ApplicationId ?? -1 : -1;
+                return result.Success ? result.ApplicationId ?? -1 : -1;
             }
 
             throw new InvalidOperationException();

@@ -8,4 +8,8 @@
     <ProjectReference Include="..\SlothEnterprise.External\SlothEnterprise.External.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

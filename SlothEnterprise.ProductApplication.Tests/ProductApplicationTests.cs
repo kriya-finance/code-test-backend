@@ -2,6 +2,8 @@
 using Moq;
 using SlothEnterprise.External;
 using SlothEnterprise.External.V1;
+using SlothEnterprise.ProductApplication.Abstractions;
+using SlothEnterprise.ProductApplication.Abstractions.Services;
 using SlothEnterprise.ProductApplication.Applications;
 using SlothEnterprise.ProductApplication.Products;
 using Xunit;

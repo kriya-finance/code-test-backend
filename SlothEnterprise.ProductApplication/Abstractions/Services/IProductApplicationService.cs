@@ -1,6 +1,4 @@
-﻿using SlothEnterprise.ProductApplication.Applications;
-
-namespace SlothEnterprise.ProductApplication
+﻿namespace SlothEnterprise.ProductApplication.Abstractions.Services
 {
     public interface IProductApplicationService
     {

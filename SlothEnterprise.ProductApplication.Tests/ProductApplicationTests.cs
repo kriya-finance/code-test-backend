@@ -15,10 +15,15 @@ namespace SlothEnterprise.ProductApplication.Tests
 
         public ProductApplicationTests()
         {
-            _sut = new ProductApplicationService(
-                null,
-                null,
-                null);
+            var serviceRegistry = new ProductServiceProvider();
+            _sut = new ProductApplicationService(serviceRegistry);
+        }
+
+        [Fact]
+        public void ProductApplicationTests_SubmitApplicationFor_WhenCalledWithMissingRequest_ShouldThrowArgumentNullException()
+        {
+            //THEN
+            Assert.Throws<ArgumentNullException>(() => _sut.SubmitApplicationFor(null));
         }
 
         [Fact]
@@ -41,6 +46,18 @@ namespace SlothEnterprise.ProductApplication.Tests
 
             //THEN
             Assert.Throws<ArgumentNullException>(() => _sut.SubmitApplicationFor(sellerApplicationMock.Object));
+        }
+
+        [Fact]
+        public void ProductApplicationTests_SubmitApplicationFor_WhenCalledWithUnknownProduct_ShouldThrowInvalidOperationException()
+        {
+            // GIVEN
+            var sellerApplicationMock = new Mock<ISellerApplication>();
+            sellerApplicationMock.SetupProperty(p => p.Product, new Mock<IProduct>().Object);
+            sellerApplicationMock.SetupProperty(p => p.CompanyData, new SellerCompanyData());
+
+            //THEN
+            Assert.Throws<InvalidOperationException>(() => _sut.SubmitApplicationFor(sellerApplicationMock.Object));
         }
     }
 }

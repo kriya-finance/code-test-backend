@@ -7,6 +7,7 @@ using SlothEnterprise.ProductApplication.Abstractions.Services;
 using SlothEnterprise.ProductApplication.Models.Applications;
 using SlothEnterprise.ProductApplication.Models.Products;
 using SlothEnterprise.ProductApplication.Services;
+using SlothEnterprise.ProductApplication.Services.ProductServices;
 using Xunit;
 
 namespace SlothEnterprise.ProductApplication.Tests
@@ -26,10 +27,10 @@ namespace SlothEnterprise.ProductApplication.Tests
                         It.IsAny<decimal>()))
                 .Returns(1);
 
-            _sut = new ProductApplicationService(
-                _selectInvoiceServiceMock.Object,
-                null,
-                null);
+            var service = new SelectiveInvoiceDiscountService(_selectInvoiceServiceMock.Object);
+            var serviceRegistry = new ProductServiceProvider();
+            serviceRegistry.RegisterService(service);
+            _sut = new ProductApplicationService(serviceRegistry);
         }
 
         [Fact]

@@ -1,11 +1,10 @@
-﻿using FluentAssertions;
+﻿using System;
 using Moq;
-using SlothEnterprise.External;
-using SlothEnterprise.External.V1;
 using SlothEnterprise.ProductApplication.Abstractions;
 using SlothEnterprise.ProductApplication.Abstractions.Services;
 using SlothEnterprise.ProductApplication.Models.Applications;
 using SlothEnterprise.ProductApplication.Models.Products;
+using SlothEnterprise.ProductApplication.Services;
 using Xunit;
 
 namespace SlothEnterprise.ProductApplication.Tests
@@ -13,29 +12,35 @@ namespace SlothEnterprise.ProductApplication.Tests
     public class ProductApplicationTests
     {
         private readonly IProductApplicationService _sut;
-        private readonly Mock<IConfidentialInvoiceService> _confidentialInvoiceServiceMock = new Mock<IConfidentialInvoiceService>();
-        private readonly ISellerApplication _sellerApplication;
-        private readonly Mock<IApplicationResult> _result = new Mock<IApplicationResult>();
 
         public ProductApplicationTests()
         {
-            _result.SetupProperty(p => p.ApplicationId, 1);
-            _result.SetupProperty(p => p.Success, true);
-            var productApplicationService = new Mock<IProductApplicationService>();
-            _sut = productApplicationService.Object;
-            productApplicationService.Setup(m => m.SubmitApplicationFor(It.IsAny<ISellerApplication>())).Returns(1);
-            var sellerApplicationMock = new Mock<ISellerApplication>();
-            sellerApplicationMock.SetupProperty(p => p.Product, new ConfidentialInvoiceDiscount());
-            sellerApplicationMock.SetupProperty(p => p.CompanyData, new SellerCompanyData());
-            _sellerApplication = sellerApplicationMock.Object;
+            _sut = new ProductApplicationService(
+                null,
+                null,
+                null);
         }
 
         [Fact]
-        public void ProductApplicationService_SubmitApplicationFor_WhenCalledWithSelectiveInvoiceDiscount_ShouldReturnOne()
+        public void ProductApplicationTests_SubmitApplicationFor_WhenCalledWithMissingCompanyData_ShouldThrowArgumentNullException()
         {
-            _confidentialInvoiceServiceMock.Setup(m => m.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(_result.Object);
-            var result = _sut.SubmitApplicationFor(_sellerApplication);
-            result.Should().Be(1);
+            // GIVEN
+            var sellerApplicationMock = new Mock<ISellerApplication>();
+            sellerApplicationMock.SetupProperty(p => p.Product, new ConfidentialInvoiceDiscount { TotalLedgerNetworth = 100, AdvancePercentage = 10, VatRate = 0.15M });
+
+            //THEN
+            Assert.Throws<ArgumentNullException>(() => _sut.SubmitApplicationFor(sellerApplicationMock.Object));
+        }
+
+        [Fact]
+        public void ProductApplicationTests_SubmitApplicationFor_WhenCalledWithMissingProduct_ShouldThrowArgumentNullException()
+        {
+            // GIVEN
+            var sellerApplicationMock = new Mock<ISellerApplication>();
+            sellerApplicationMock.SetupProperty(p => p.CompanyData, new SellerCompanyData());
+
+            //THEN
+            Assert.Throws<ArgumentNullException>(() => _sut.SubmitApplicationFor(sellerApplicationMock.Object));
         }
     }
 }

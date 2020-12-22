@@ -4,8 +4,8 @@ using SlothEnterprise.External;
 using SlothEnterprise.External.V1;
 using SlothEnterprise.ProductApplication.Abstractions;
 using SlothEnterprise.ProductApplication.Abstractions.Services;
-using SlothEnterprise.ProductApplication.Applications;
-using SlothEnterprise.ProductApplication.Products;
+using SlothEnterprise.ProductApplication.Models.Applications;
+using SlothEnterprise.ProductApplication.Models.Products;
 using Xunit;
 
 namespace SlothEnterprise.ProductApplication.Tests

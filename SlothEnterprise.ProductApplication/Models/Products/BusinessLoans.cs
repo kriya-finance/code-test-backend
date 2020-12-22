@@ -2,9 +2,11 @@
 
 namespace SlothEnterprise.ProductApplication.Models.Products
 {
+    /// <inheritdoc cref="IProduct">
     public class BusinessLoans : IProduct
     {
         public int Id { get; set; }
+
         /// <summary>
         /// Per annum interest rate
         /// </summary>

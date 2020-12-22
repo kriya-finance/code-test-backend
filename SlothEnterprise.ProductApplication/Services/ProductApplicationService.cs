@@ -7,6 +7,7 @@ using SlothEnterprise.ProductApplication.Models.Products;
 
 namespace SlothEnterprise.ProductApplication.Services
 {
+    /// <inheritdoc cref="IProductApplicationService">
     public class ProductApplicationService : IProductApplicationService
     {
         private readonly ISelectInvoiceService _selectInvoiceService;

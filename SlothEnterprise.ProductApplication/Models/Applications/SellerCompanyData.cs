@@ -3,6 +3,7 @@ using SlothEnterprise.ProductApplication.Abstractions;
 
 namespace SlothEnterprise.ProductApplication.Models.Applications
 {
+    /// <inheritdoc cref="ISellerCompanyData">
     public class SellerCompanyData : ISellerCompanyData
     {
         public string Name { get; set; }

@@ -11,6 +11,7 @@ namespace SlothEnterprise.ProductApplication.Extensions
                 return applicationResult.ApplicationId ?? -1;
             }
 
+            //FYI: I've modified a little bit original logic - if returned result is null then I return -1 as well
             return -1;
         }
     }

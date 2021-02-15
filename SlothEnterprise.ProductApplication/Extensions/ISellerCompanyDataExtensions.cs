@@ -10,8 +10,7 @@ namespace SlothEnterprise.ProductApplication.Extensions
         {
             if (sellerCompanyData == null)
             {
-                var parameterName = nameof(sellerCompanyData);
-                throw new ArgumentNullException(parameterName, $"Can not create CompanyDataRequest - {parameterName} is null");
+                throw new ArgumentNullException(nameof(sellerCompanyData), "Can not create CompanyDataRequest");
             }
 
             return new CompanyDataRequest

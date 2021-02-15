@@ -16,7 +16,19 @@ namespace SlothEnterprise.ProductApplication
 
         public int SubmitApplicationFor(ISellerApplication application)
         {
-            IApplicationHandler appropriateApplicationHandler = _applicationHandlers.FirstOrDefault(x => x.CanHandle(application));
+            if (application == null)
+            {
+                throw new ArgumentNullException(nameof(application), "Empty application when submitting for");
+            }
+
+            if (application.Product == null)
+            {
+                throw new ArgumentNullException(nameof(application.Product), "Empty product when submitting application");
+            }
+
+            IApplicationHandler appropriateApplicationHandler = _applicationHandlers.FirstOrDefault(x => x.CanHandle(application.Product));
+            //TODO: Based on business requirements we can also use SingleOrDefault,
+            //if we want to throw exception when more than 1 handler can submit application - it may mean an incorrect request
 
             if (appropriateApplicationHandler == null)
             {

@@ -13,9 +13,9 @@ namespace SlothEnterprise.ProductApplication.ApplicationHandlers
             _selectInvoiceService = selectInvoiceService;
         }
 
-        public bool CanHandle(ISellerApplication application)
+        public bool CanHandle(IProduct product)
         {
-            return application?.Product is SelectiveInvoiceDiscount;
+            return product is SelectiveInvoiceDiscount;
         }
 
         public int Handle(ISellerApplication application)

@@ -15,9 +15,9 @@ namespace SlothEnterprise.ProductApplication.ApplicationHandlers
             _businessLoansService = businessLoansService;
         }
 
-        public bool CanHandle(ISellerApplication application)
+        public bool CanHandle(IProduct product)
         {
-            return application?.Product is BusinessLoans;
+            return product is BusinessLoans;
         }
 
         public int Handle(ISellerApplication application)

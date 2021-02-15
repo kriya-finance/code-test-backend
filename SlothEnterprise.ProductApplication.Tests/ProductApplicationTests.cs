@@ -1,7 +1,5 @@
-﻿using FluentAssertions;
-using Moq;
-using SlothEnterprise.External;
-using SlothEnterprise.External.V1;
+﻿using Moq;
+using SlothEnterprise.ProductApplication.ApplicationHandlers;
 using SlothEnterprise.ProductApplication.Applications;
 using SlothEnterprise.ProductApplication.Products;
 using Xunit;
@@ -10,30 +8,64 @@ namespace SlothEnterprise.ProductApplication.Tests
 {
     public class ProductApplicationTests
     {
+        private readonly Mock<IApplicationHandler> _selectInvoiceApplicationHandlerMock;
+        private readonly Mock<IApplicationHandler> _confidentialInvoiceApplicationHandler;
+        private readonly Mock<IApplicationHandler> _businessLoansApplicationHandlerMock;
+
+        private readonly Mock<ISellerApplication> _sellerApplicationMock;
+
         private readonly IProductApplicationService _sut;
-        private readonly Mock<IConfidentialInvoiceService> _confidentialInvoiceServiceMock = new Mock<IConfidentialInvoiceService>();
-        private readonly ISellerApplication _sellerApplication;
-        private readonly Mock<IApplicationResult> _result = new Mock<IApplicationResult>();
 
         public ProductApplicationTests()
         {
-            _result.SetupProperty(p => p.ApplicationId, 1);
-            _result.SetupProperty(p => p.Success, true);
-            var productApplicationService = new Mock<IProductApplicationService>();
-            _sut = productApplicationService.Object;
-            productApplicationService.Setup(m => m.SubmitApplicationFor(It.IsAny<ISellerApplication>())).Returns(1);
-            var sellerApplicationMock = new Mock<ISellerApplication>();
-            sellerApplicationMock.SetupProperty(p => p.Product, new ConfidentialInvoiceDiscount());
-            sellerApplicationMock.SetupProperty(p => p.CompanyData, new SellerCompanyData());
-            _sellerApplication = sellerApplicationMock.Object;
+            _selectInvoiceApplicationHandlerMock = new Mock<IApplicationHandler>();
+            _confidentialInvoiceApplicationHandler = new Mock<IApplicationHandler>();
+            _businessLoansApplicationHandlerMock = new Mock<IApplicationHandler>();
+
+            _selectInvoiceApplicationHandlerMock.Setup(x => x.CanHandle(It.IsAny<SelectiveInvoiceDiscount>())).Returns(true);
+            _confidentialInvoiceApplicationHandler.Setup(x => x.CanHandle(It.IsAny<ConfidentialInvoiceDiscount>())).Returns(true);
+            _businessLoansApplicationHandlerMock.Setup(x => x.CanHandle(It.IsAny<BusinessLoans>())).Returns(true);
+
+            _sellerApplicationMock = new Mock<ISellerApplication>();
+
+            _sut = new ProductApplicationService(
+                new IApplicationHandler[]
+                {
+                    _selectInvoiceApplicationHandlerMock.Object,
+                    _confidentialInvoiceApplicationHandler.Object,
+                    _businessLoansApplicationHandlerMock.Object
+                }
+             );
         }
 
         [Fact]
-        public void ProductApplicationService_SubmitApplicationFor_WhenCalledWithSelectiveInvoiceDiscount_ShouldReturnOne()
+        public void ProductApplicationService_WhenCalledWithSelectiveInvoiceDiscount_ShouldCallAppropriateProductHandler()
         {
-            _confidentialInvoiceServiceMock.Setup(m => m.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(_result.Object);
-            var result = _sut.SubmitApplicationFor(_sellerApplication);
-            result.Should().Be(1);
+            _sellerApplicationMock.SetupProperty(x => x.Product, new SelectiveInvoiceDiscount());
+
+            _sut.SubmitApplicationFor(_sellerApplicationMock.Object);
+
+            _selectInvoiceApplicationHandlerMock.Verify(x => x.Handle(_sellerApplicationMock.Object), Times.Once());
+        }
+
+        [Fact]
+        public void ProductApplicationService_WhenCalledWithConfidentialInvoiceDiscount_ShouldCallAppropriateProductHandler()
+        {
+            _sellerApplicationMock.SetupProperty(x => x.Product, new ConfidentialInvoiceDiscount());
+
+            _sut.SubmitApplicationFor(_sellerApplicationMock.Object);
+
+            _confidentialInvoiceApplicationHandler.Verify(x => x.Handle(_sellerApplicationMock.Object), Times.Once());
+        }
+
+        [Fact]
+        public void ProductApplicationService_WhenCalledWithBusinessLoans_ShouldCallAppropriateProductHandler()
+        {
+            _sellerApplicationMock.SetupProperty(x => x.Product, new BusinessLoans());
+
+            _sut.SubmitApplicationFor(_sellerApplicationMock.Object);
+
+            _businessLoansApplicationHandlerMock.Verify(x => x.Handle(_sellerApplicationMock.Object), Times.Once());
         }
     }
 }
